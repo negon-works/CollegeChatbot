@@ -112,22 +112,6 @@ def dashboard(request):
 @login_required
 @user_passes_test(_is_staff_user)
 def bot_content(request):
-    for category, intent, triggers, response, follow_up, priority in DEFAULT_BOT_ENTRIES:
-        ChatbotEntry.objects.get_or_create(
-            intent=intent,
-            defaults={
-                "category": category,
-                "trigger_keywords": triggers,
-                "response": response,
-                "phone_number": "0468-2319131" if intent == "contact" else "",
-                "whatsapp_number": "",
-                "email_address": "principal@cearanmula.ac.in" if intent == "contact" else "",
-                "follow_up": follow_up,
-                "priority": priority,
-                "is_active": True,
-            },
-        )
-
     fallback_entry, _ = ChatbotEntry.objects.get_or_create(
         intent="fallback",
         defaults={
