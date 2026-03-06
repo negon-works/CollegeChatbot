@@ -1,0 +1,117 @@
+{% extends 'staffpanel/base.html' %}
+
+{% block title %}Dashboard | Staff Panel{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="panel-card full">
+    <h3>Current Status</h3>
+    <div class="mini-stats-row">
+        <div class="mini-stat">
+            <span>Total Entries</span>
+            <strong>{{ total_entries }}</strong>
+        </div>
+        <div class="mini-stat">
+            <span>Active Entries</span>
+            <strong>{{ active_entries }}</strong>
+        </div>
+        <div class="mini-stat">
+            <span>Pending Collected</span>
+            <strong>{{ pending_collected }}</strong>
+        </div>
+    </div>
+</section>
+
+<section class="panel-card full">
+    <h3>Bot Management Guide</h3>
+    <div class="quick-guide" id="quick-guide">
+        <p class="muted-text">Before adding a new bot entry, remember:</p>
+        <ul class="simple-list">
+            <li><strong>Select Category</strong>: Choose the correct category before saving.</li>
+            <li><span class="chip-key">Chatbot</span> - greetings, bot info, system responses</li>
+            <li><span class="chip-key">College</span> - courses, admissions, hostel, campus details</li>
+            <li><strong>Add Clear Triggers</strong>: Triggers are the words users type to activate a response.</li>
+            <li><strong>Set Priority Properly</strong>: Lower number = higher priority (matches first).</li>
+            <li><strong>Check Active Status</strong>: Make sure the entry is Active if you want the bot to use it.</li>
+        </ul>
+        <div class="guide-note-row">
+            <p class="guide-note"><strong>For detailed instructions, please read the Full Bot Management Guide.</strong></p>
+            <button type="button" class="btn-link guide-toggle-btn" id="view-full-guide">View Full Guide</button>
+        </div>
+    </div>
+
+    <div class="priority-example guide-hidden" id="full-guide">
+        <p><strong>1. Adding or Editing Content</strong></p>
+        <p>Open Bot Content to add, edit, or manage chatbot responses.</p>
+        <p>Each entry contains:</p>
+        <ul class="simple-list">
+            <li>Triggers: The words or phrases users type that activate the response.</li>
+            <li>Response: The message the chatbot will send to the user.</li>
+            <li>Priority: Controls which response should match first.</li>
+        </ul>
+
+        <p><strong>2. Category Selection (Important)</strong></p>
+        <p>When creating a new entry, always select the correct Category.</p>
+        <p>This helps keep the bot organized and makes it easier for different teams to manage content.</p>
+        <p><strong>Available Categories</strong></p>
+        <ul class="simple-list">
+            <li><strong>Chatbot</strong>: Used for general bot behavior such as greetings, identity, thanks, fallback messages, etc. Managed mainly by chatbot designers or developers.</li>
+            <li><strong>College</strong>: Used for college-related information such as courses, admissions, hostel details, fees, documents, and campus information. Managed mainly by college staff or administrators.</li>
+        </ul>
+        <p>Selecting the correct category ensures that content is sorted and easy to manage for both teams.</p>
+        <p><strong>Important:</strong> Do not forget to select a category before saving a new entry.</p>
+
+        <p><strong>3. Understanding Priority</strong></p>
+        <p>Priority determines which trigger is matched first. Lower numbers have higher priority.</p>
+        <p><strong>Correct Configuration</strong></p>
+        <p><span class="chip-key">hello</span> priority <span class="chip-num">10</span></p>
+        <p><span class="chip-key">admission</span> priority <span class="chip-num">5</span></p>
+        <p>User: <span class="chip-user">hello admission plz</span></p>
+        <p>Bot reply: <span class="chip-good">Admission information</span></p>
+        <p><strong>Incorrect Configuration</strong></p>
+        <p><span class="chip-key">hello</span> priority <span class="chip-num">5</span></p>
+        <p><span class="chip-key">admission</span> priority <span class="chip-num">10</span></p>
+        <p>User: <span class="chip-user">hello admission plz</span></p>
+        <p>Bot reply: <span class="chip-bad">Greeting message</span></p>
+
+        <p><strong>4. Active / Inactive Toggle</strong></p>
+        <ul class="simple-list">
+            <li>Active: The chatbot can use this entry.</li>
+            <li>Inactive: The entry is temporarily disabled.</li>
+        </ul>
+        <p>This allows staff to quickly enable or disable responses without deleting them.</p>
+
+        <p><strong>5. Best Practices</strong></p>
+        <ul class="simple-list">
+            <li>Keep triggers short and clear.</li>
+            <li>Avoid duplicate triggers across entries.</li>
+            <li>Always check priority order before saving.</li>
+            <li>Select the correct Category (Chatbot or College) to keep the system organized.</li>
+        </ul>
+
+        <p>Properly organizing entries will help the chatbot provide accurate and reliable responses to users.</p>
+        <button type="button" class="btn-link secondary-btn read-less-btn" id="read-less-guide">Read Less</button>
+    </div>
+</section>
+<script>
+    (function () {
+        const quickGuide = document.getElementById("quick-guide");
+        const fullGuide = document.getElementById("full-guide");
+        const viewFullBtn = document.getElementById("view-full-guide");
+        const readLessBtn = document.getElementById("read-less-guide");
+        if (!quickGuide || !fullGuide || !viewFullBtn || !readLessBtn) return;
+
+        viewFullBtn.addEventListener("click", function () {
+            quickGuide.classList.add("guide-hidden");
+            fullGuide.classList.remove("guide-hidden");
+            window.scrollTo({ top: 0, behavior: "auto" });
+        });
+
+        readLessBtn.addEventListener("click", function () {
+            fullGuide.classList.add("guide-hidden");
+            quickGuide.classList.remove("guide-hidden");
+            window.scrollTo({ top: 0, behavior: "auto" });
+        });
+    })();
+</script>
+{% endblock %}

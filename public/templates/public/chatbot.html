@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEA Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'public/css/chatbot.css' %}?v=20260306t">
+</head>
+<body>
+<!-- Main Chat App Container -->
+<div class="chat-shell">
+    <!-- Top Header: Bot Identity + Menu -->
+    <header class="chat-header">
+        <div class="brand-wrap">
+            <div class="avatar header-avatar">
+                <img class="bot-emoji" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Robot/3D/robot_3d.png" alt="">
+            </div>
+            <div>
+                <h1>CEA Assistant</h1>
+                <p class="college-mid">College of Engineering Aranmula</p>
+                <p class="status-line"><span class="dot"></span> Online now</p>
+            </div>
+        </div>
+        <div class="brand-wrap">
+            <button id="menuBtn" class="icon-btn" aria-label="Open menu">&#8942;</button>
+        </div>
+    </header>
+
+    <!-- Right Drawer Menu -->
+    <aside id="drawer" class="drawer" aria-hidden="true">
+        <div class="drawer-top">
+            <h3>Menu</h3>
+            <button id="drawerCloseBtn" class="drawer-close" aria-label="Close menu">&times;</button>
+        </div>
+        <button id="clearChatBtn" class="drawer-action">Clear Chat</button>
+        <div class="theme-toggle-row">
+            <span class="theme-toggle-label">Theme</span>
+            <label class="theme-toggle" for="themeSwitch">
+                <input id="themeSwitch" type="checkbox" aria-label="Toggle theme">
+                <span class="theme-toggle-track">
+                    <span class="theme-toggle-day"></span>
+                    <span class="theme-toggle-night"></span>
+                    <span class="theme-toggle-stars"></span>
+                </span>
+            </label>
+        </div>
+        <a class="drawer-action" href="/staff/">Staff Panel</a>
+    </aside>
+
+    <!-- Chat Content Area -->
+    <main class="messages-wrap">
+        <!-- First Screen Welcome Panel -->
+        <section id="welcomePanel" class="welcome-panel">
+            <h2>Hi <span class="wave">&#128075;</span></h2>
+            <p>How can I help you?</p>
+            <div class="welcome-pills">
+                <button class="welcome-pill" data-question="What courses are available?">Courses</button>
+                <button class="welcome-pill" data-question="How to get admission?">Admission</button>
+                <button class="welcome-pill" data-question="Eligibility for B.Tech">Eligibility</button>
+                <button class="welcome-pill" data-question="Hostel available?">Hostel</button>
+            </div>
+        </section>
+        <!-- Dynamic Chat Messages -->
+        <div id="chatMessages" class="messages"></div>
+    </main>
+
+    <!-- Quick Access Chips -->
+    <div id="quickChips" class="quick-chips is-hidden">
+        <button class="chip" data-question="What courses are available?">Courses</button>
+        <button class="chip" data-question="What is fee structure?">Fees</button>
+        <button class="chip" data-question="What are admission dates?">Dates</button>
+        <button class="chip" data-question="What documents are required?">Documents</button>
+    </div>
+
+    <!-- Message Input Bar -->
+    <form id="chatForm" class="chat-input-bar">
+        {% csrf_token %}
+        <input id="chatInput" type="text" name="question" placeholder="Message College Help Desk..." autocomplete="off" required>
+        <button type="submit" class="send-btn">&#10148;</button>
+    </form>
+</div>
+<script src="{% static 'public/js/chatbot.js' %}?v=20260306t"></script>
+</body>
+</html>

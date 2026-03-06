@@ -1,0 +1,51 @@
+{% extends 'staffpanel/base.html' %}
+
+{% block title %}{{ mode }} Entry | Staff Panel{% endblock %}
+{% block page_title %}{{ mode }} Bot Entry{% endblock %}
+
+{% block content %}
+<section class="panel-card full">
+    <form method="post" class="entry-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if focus == 'follow_up' %}
+        <div class="focus-note">Follow-up field is highlighted below.</div>
+        {% endif %}
+        <div class="form-actions">
+            <button type="submit">{{ mode }} Entry</button>
+            <a class="btn-link secondary-btn" href="{% url 'staffpanel:bot_content' %}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% if focus == 'follow_up' %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const field = document.getElementById("id_follow_up");
+        if (!field) return;
+        field.classList.add("focus-field");
+        field.scrollIntoView({ behavior: "smooth", block: "center" });
+        field.focus();
+    });
+</script>
+{% endif %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const intentField = document.getElementById("id_intent");
+        const phoneField = document.getElementById("id_phone_number");
+        const whatsappField = document.getElementById("id_whatsapp_number");
+        const emailField = document.getElementById("id_email_address");
+        if (!intentField || !phoneField || !whatsappField || !emailField) return;
+
+        const rows = [phoneField.closest("p"), whatsappField.closest("p"), emailField.closest("p")];
+        function refreshContactFields() {
+            const isContact = (intentField.value || "").trim().toLowerCase() === "contact";
+            rows.forEach((row) => {
+                if (!row) return;
+                row.style.display = isContact ? "" : "none";
+            });
+        }
+        intentField.addEventListener("input", refreshContactFields);
+        refreshContactFields();
+    });
+</script>
+{% endblock %}

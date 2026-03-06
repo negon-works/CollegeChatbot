@@ -1,0 +1,69 @@
+{% extends 'staffpanel/base.html' %}
+
+{% block title %}Collected | Staff Panel{% endblock %}
+{% block page_title %}Collected Messages{% endblock %}
+
+{% block content %}
+<section class="panel-card full">
+    <h3>New Messages Bot Did Not Know</h3>
+    <p class="muted-text">Use these to improve bot triggers quickly.</p>
+
+    {% if item_rows %}
+    <div class="collected-list">
+        {% for row in item_rows %}
+        <article class="collected-card {% if row.item.is_processed %}processed{% endif %}">
+            <div class="collected-top">
+                <h4>{{ row.item.question }}</h4>
+                <span class="collected-count">x{{ row.item.count }}</span>
+            </div>
+            <p class="collected-meta">
+                {% if row.item.is_processed %}Processed{% else %}Pending{% endif %} | Updated {{ row.item.updated_at|date:"M d, Y h:i A" }}
+            </p>
+
+            <div class="collected-actions">
+                <button type="button" class="btn-link add-intent-toggle" data-target="map-{{ row.item.id }}">Add to Intent</button>
+                <a class="btn-link secondary-btn" href="{% url 'staffpanel:collected_mark_new' row.item.id %}">
+                    Add as New Intent
+                </a>
+                <form method="post" action="{% url 'staffpanel:collected_remove' row.item.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-link danger-btn">Remove</button>
+                </form>
+            </div>
+
+            <form method="post" action="{% url 'staffpanel:collected_add_to_intent' row.item.id %}" class="collected-form-row is-hidden" id="map-{{ row.item.id }}">
+                {% csrf_token %}
+                {{ row.form.intent_entry }}
+                <button type="submit" class="btn-link">Save</button>
+            </form>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No collected fallback messages yet.</p>
+    {% endif %}
+</section>
+<script>
+    (function () {
+        const toggles = document.querySelectorAll(".add-intent-toggle");
+        const forms = document.querySelectorAll(".collected-form-row");
+        function closeAll() {
+            forms.forEach((f) => f.classList.add("is-hidden"));
+        }
+        toggles.forEach((btn) => {
+            btn.addEventListener("click", function () {
+                const targetId = btn.getAttribute("data-target");
+                const target = document.getElementById(targetId);
+                if (!target) return;
+                const willOpen = target.classList.contains("is-hidden");
+                closeAll();
+                if (willOpen) target.classList.remove("is-hidden");
+            });
+        });
+        document.addEventListener("click", function (e) {
+            if (e.target.closest(".collected-form-row") || e.target.closest(".add-intent-toggle")) return;
+            closeAll();
+        });
+    })();
+</script>
+{% endblock %}

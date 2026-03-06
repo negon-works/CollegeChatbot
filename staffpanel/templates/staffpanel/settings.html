@@ -1,0 +1,15 @@
+{% extends 'staffpanel/base.html' %}
+
+{% block title %}Settings | Staff Panel{% endblock %}
+{% block page_title %}Settings{% endblock %}
+
+{% block content %}
+<section class="panel-card full">
+    <h3>Staff Settings</h3>
+    <p>Use these quick actions for panel control.</p>
+    <div class="settings-actions">
+        <a class="btn-link" href="/" target="_blank" rel="noopener">View Chatbot</a>
+        <a class="btn-link danger-btn" href="{% url 'staffpanel:logout' %}">Logout</a>
+    </div>
+</section>
+{% endblock %}

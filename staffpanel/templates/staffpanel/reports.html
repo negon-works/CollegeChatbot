@@ -1,0 +1,80 @@
+{% extends 'staffpanel/base.html' %}
+
+{% block title %}Reports | Staff Panel{% endblock %}
+{% block page_title %}Reports{% endblock %}
+
+{% block content %}
+<section class="panel-card full">
+    <h3>Knowledge Base Summary</h3>
+    <div class="card-grid">
+        {% for item in summary %}
+        <article class="stat-card">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.value }}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="panel-card full">
+    <h3>Top Priority Active Entries</h3>
+    {% if top_priority %}
+    <div class="table-wrap">
+        <table class="entries-table">
+            <thead>
+                <tr>
+                    <th>Intent</th>
+                    <th>Priority</th>
+                    <th>Follow-up</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in top_priority %}
+                <tr>
+                    <td>{{ item.intent }}</td>
+                    <td>{{ item.priority }}</td>
+                    <td>{% if item.follow_up %}Yes{% else %}No{% endif %}</td>
+                    <td class="cell-actions">
+                        <a href="{% url 'staffpanel:bot_entry_edit' item.id %}">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No active entries yet. Add entries from Bot Content.</p>
+    {% endif %}
+</section>
+
+<section id="followup-section" class="panel-card full">
+    <h3>Follow-up Gaps</h3>
+    {% if followup_gaps %}
+    <div class="table-wrap">
+        <table class="entries-table">
+            <thead>
+                <tr>
+                    <th>Intent</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in followup_gaps %}
+                <tr>
+                    <td>{{ item.intent }}</td>
+                    <td>{{ item.priority }}</td>
+                    <td class="cell-actions">
+                        <a href="{% url 'staffpanel:bot_entry_edit' item.id %}?focus=follow_up">Open Follow-up Field</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>All active entries already have follow-up text.</p>
+    {% endif %}
+</section>
+{% endblock %}

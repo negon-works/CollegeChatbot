@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login | CEA Assistant</title>
+    <link rel="stylesheet" href="{% static 'staffpanel/css/staffpanel.css' %}?v=20260306r">
+</head>
+<body class="login-body">
+<!-- Login Card -->
+<div class="login-card">
+    <!-- Brand Block -->
+    <div class="login-brand">
+        <div class="login-brand-icon">CEA</div>
+        <div>
+            <h1>Staff Panel Login</h1>
+            <p>College of Engineering Aranmula</p>
+        </div>
+    </div>
+    <p class="login-subtitle">Use your staff credentials to continue.</p>
+    <!-- Staff Login Form -->
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_username">Username</label>
+        <input id="id_username" type="text" name="username" required>
+
+        <label for="id_password">Password</label>
+        <input id="id_password" type="password" name="password" required>
+
+        {% if form.errors %}
+        <div class="error-text">Invalid username or password.</div>
+        {% endif %}
+
+        <button type="submit">Sign In</button>
+    </form>
+    <!-- Back Link -->
+    <a class="back-link" href="/">Back to Chatbot</a>
+</div>
+</body>
+</html>
